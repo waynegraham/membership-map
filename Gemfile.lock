@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    dotenv (2.2.0)
+    geocoder (1.4.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  dotenv
+  geocoder
+
+BUNDLED WITH
+   1.14.6
