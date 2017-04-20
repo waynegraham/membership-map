@@ -1,0 +1,18 @@
+var members = {
+  "type": "FeatureCollection",
+  "features": [
+  <% @features.each do |feature, index| %>
+  {
+    "geometry": {
+      "type": "Point",
+      "coordinates": [<%= feature[:longitude] %>, <%= feature[:latitude] %>]
+    },
+    "type": "Feature",
+    "properties": {
+      "popupContent": "<h2 class='popup'><a href=\"<%= feature[:web_path] %>\"><%= feature[:institution] %></a></h2><p><strong>Address:</strong> <%= feature[:address] %></p><p><strong>Member Since:</strong> <%= feature[:start_date]%></p>"
+    },
+    "id": "<%= feature[:id] %>"
+  }<% unless index == feature.length - 1 %>,<% end %>
+  <% end %>
+]
+};
