@@ -28,42 +28,51 @@ end
 
 puts "Fetching the members page from https://www.diglib.org/members/".yellow
 a = Mechanize.new
-page = a.get('https://www.diglib.org/members/')
+# page = a.get('https://www.diglib.org/members/')
 counter = 0
 CSV.foreach("Membership.csv") do |row|
 
-  result = Geocoder.search(row[3])
+  address = "#{row[0]} #{row[7]} #{row[7]} #{row[8]} #{row[9]}"
 
-  puts "Looking up location of #{row[1]}".green
+  puts address
+break
+  result = Geocoder.search(address)
+
+  puts result.inspect
+
+  # puts "Looking up location of #{row[1]}".green
 
   # find text on the page and grab the link
   link = page.link_with(:text => row[1])
   uri = "#"
   uri = link.resolved_uri unless link.nil?
 
-  @failures = []
 
-  unless result.size == 0
-    feature = {
-      institution: row[1],
-      start_date:  row[2],
-      address:     row[3],
-      latitude:    result.first.latitude,
-      longitude:   result.first.longitude,
-      web_path:    uri,
-      id:          result.first.place_id
-    }
 
-    @features << feature
-  else
-    # puts "Could not locate #{row[1]}".red
-    feature = {
-      institution: row[1],
-      address:     row[3],
-      web_path:    link
-    }
-    @failures << feature
-  end
+  # @failures = []
+  #
+  # unless result.size == 0
+  #   feature = {
+  #     institution: row[1],
+  #     start_date:  row[2],
+  #     address:     row[5],
+  #     latitude:    result.first.latitude,
+  #     longitude:   result.first.longitude,
+  #     web_path:    uri,
+  #     id:          result.first.place_id
+  #   }
+  #
+  #   @features << feature
+  # else
+  #   # puts "Could not locate #{row[1]}".red
+  #   feature = {
+  #     institution: row[1],
+  #     address:     row[5],
+  #     web_path:    uri
+  #   }
+  #   @failures << feature
+  #   puts feature.to_s.red
+  # end
 
 end
 
@@ -80,5 +89,5 @@ end
 
 puts "\nFailures to look at:"
 @failures.each do |failure|
-  puts f.red
+  puts failure[:institution].red
 end
